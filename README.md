@@ -6,4 +6,4 @@
 - Input test file : *OCR_test.txt*
 - Result file : *‫‪results.txt‬‬*
 
->The Calculation Inteligence Project
+>The Calculation Inteligence - Simple Machine Learning Project
