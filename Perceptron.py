@@ -1,11 +1,11 @@
-from numpy import random
+from random import *
 
 def read_train_file(file="OCR_train.txt"):
     training_data_list = []
     train_file = open(file, "r")
     for line in train_file:
         line = list(line.replace(" ", ""))
-        line = [x for x in line if x != "\n"]
+        line = [int(x) * 2 - 1 for x in line if x != "\n"]
         training_data_list.extend([line[:]])
     return training_data_list
 
@@ -17,13 +17,27 @@ def active_func(y_in, teta=0.2):                    #activation function
     elif y_in < -teta:
         return -1
 
-make_int_array = lambda my_list: [int(x) * 2 - 1 for x in my_list]      #make bipolar
+def make_binary(n):
+    pos = n.index(1) + 1
+    res = list(format(pos, 'b').zfill(3))
+    res = [int(x) for x in res]
+    return res
+
+def set_weight(num):
+    weights = []
+    for x in range(num):
+        weights.extend([[random() for _ in range(64)]])  # initialize weights and biases
+        # weights.extend([[0] * 64])
+    return weights
+
 
 cal_eroor = lambda error, total: (error / total) * 100
 
-weights = []
-for x in range(7):
-    weights.extend([random.rand(64)])               #initialize weights and biases
+
+weights = set_weight(7)
+"""3 CELLS"""
+# weights = set_weight(3)
+
 
 errors = [True]                                     #contain errors of each training pair
 epoch = 0                                           #counter of epochs
@@ -34,8 +48,11 @@ while True in errors:                               #check stopping condition
     errors.clear()
     epoch += 1
     for j in training_data:
-        x = make_int_array(j[:64])                  #set each input unit
-        expected = make_int_array(j[-7:])
+        x = j[:64]                 #set each input unit
+        expected = j[-7:]
+
+        """3 CELLS"""
+        # expected = make_binary(expected)
 
         for weight, t in zip(weights, expected):    #each output unit
             result = 0                              # y_in in each training pair
@@ -49,6 +66,7 @@ while True in errors:                               #check stopping condition
                 errors.append(True)
             else:
                 errors.append(False)                #weights unchanged!
+    print(str(epoch))
 
 """WEIGHTS AND BIASES SAVING PHASE OF NN"""
 weight_file = open("‫‪perceptron_weights.txt‬‬", "w")
@@ -69,8 +87,12 @@ results = open("‫‪results.txt‬‬", "w")
 if input("\nDo you want to use your Perceptron NN? (y/n)") == 'y':
     test_file = read_train_file("OCR_test.txt")
     for elem in test_file:
-        sample = make_int_array(elem[:64])
-        target = make_int_array(elem[-7:])
+        sample = elem[:64]
+        target = elem[-7:]
+
+        """3 CELLS"""
+        # target = make_binary(target)
+
         output.clear()
         _total += 1
         for weight in weights:
@@ -84,6 +106,9 @@ if input("\nDo you want to use your Perceptron NN? (y/n)") == 'y':
         results.write("Expected: " + str(target))
         print("Result:   " + str(output) + "\n------------\n")
         results.write("\nResult:   " + str(output) + "\n------------\n")
+
 print("\n\nPercent of Error in NN: " + str(cal_eroor(_error, _total)))
+print("\nNumber of Cells in NN: " + str(len(weights)))
 results.write("\n\nPercent of Error in NN: " + str(cal_eroor(_error, _total)))
+results.write("\nNumber of Cells in NN: " + str(len(weights)))
 results.close()
