@@ -1,6 +1,5 @@
-## Character Recognition Using Single-layer `Perceptron`
-###### This Project implement the `Single-layer` Neural Network using Perceptron learning rule.
-
+## Character Recognition Using Single-layer `Perceptron` and `Adeline`
+###### This Project implement the `Single-layer` Neural Network using Perceptron and Adeline learning rule.
 - Input file : *OCR_train.txt*
 - Saved file : *‫‪perceptron_weights.txt‬‬*
 - Input test file : *OCR_test.txt*
