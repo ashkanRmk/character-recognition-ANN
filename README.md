@@ -11,3 +11,4 @@
 
 it will get gui later!!!
 contain new features:
+whith 3 celss
