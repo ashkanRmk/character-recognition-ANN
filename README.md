@@ -8,5 +8,3 @@
 >The Calculation Inteligence - Simple Machine Learning Project
 
 ###### Coded in `Python` and `C++`
-
-it will g
