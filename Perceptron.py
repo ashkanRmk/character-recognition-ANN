@@ -9,7 +9,7 @@ def read_train_file(file="OCR_train.txt"):
         training_data_list.extend([line[:]])
     return training_data_list
 
-def active_func(y_in, teta=0.2):                    #activation function
+def active_func(y_in, teta=0):                    #activation function
     if y_in > teta:
         return 1
     elif teta >= y_in >= -teta:
@@ -22,6 +22,24 @@ def make_binary(n):
     res = list(format(pos, 'b').zfill(3))
     res = [int(x) for x in res]
     return res
+
+def make_forth_cells(n):
+    pos = n.index(1) + 1
+    if pos == 1:
+        list = [1,0,0,0]
+    elif pos == 2:
+        list = [0,1,0,0]
+    elif pos == 3:
+        list = [0,0,1,0]
+    elif pos == 4:
+        list = [0,0,0,1]
+    elif pos == 5:
+        list = [1,1,0,0]
+    elif pos == 6:
+        list = [0,0,1,1]
+    elif pos == 7:
+        list = [0,1,1,0]
+    return list
 
 def set_weight(num):
     weights = []
@@ -37,6 +55,8 @@ cal_eroor = lambda error, total: (error / total) * 100
 weights = set_weight(7)
 """3 CELLS"""
 # weights = set_weight(3)
+"""4 CELLS"""
+# weights = set_weight(4)
 
 
 errors = [True]                                     #contain errors of each training pair
@@ -53,7 +73,10 @@ while True in errors:                               #check stopping condition
 
         """3 CELLS"""
         # expected = make_binary(expected)
+        """4 CELLS"""
+        # expected = make_forth_cells(expected)
 
+        # print(expected)
         for weight, t in zip(weights, expected):    #each output unit
             result = 0                              # y_in in each training pair
             for w, s in zip(weight, x):
@@ -92,6 +115,8 @@ if input("\nDo you want to use your Perceptron NN? (y/n)") == 'y':
 
         """3 CELLS"""
         # target = make_binary(target)
+        """4 CELLS"""
+        # target = make_forth_cells(target)
 
         output.clear()
         _total += 1
