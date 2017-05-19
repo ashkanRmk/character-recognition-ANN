@@ -24,48 +24,58 @@ def make_binary(n):
 def set_weight(num):
     weights = []
     for x in range(num):
-        weights.extend([[random() for _ in range(64)]])  # initialize weights and biases
-        # weights.extend([[0] * 64])
+        # weights.extend([[random() for _ in range(64)]])  # initialize weights and biases
+        weights.extend([[0] * 64])
     return weights
 
 cal_eroor = lambda error, total: (error / total) * 100
-
 
 weights = set_weight(7)
 """3 CELLS"""
 # weights = set_weight(3)
 
-diff_weights = [0]*64                                     #contain errors of each training pair
-epoch = 0                                           #counter of epochs
-alpha = 1
+diff_weights = []                                    #contain errors of each training pair
+for x in range(7):
+    diff_weights.extend([[0] * 64])
+
+epoch = 0                                          #counter of epochs
+alpha = 0.01
 epsilon = 1
 training_data = read_train_file()
 
+we = [0]
+
+ch = True
 
 """TRAINING PHASE OF NN"""
-while max(diff_weights) < epsilon:                               #check stopping condition
+# while max(we) > epsilon or ch:                               #check stopping condition
+for o in range(9):
     epoch += 1
+    ch = False
     for j in training_data:
-        x = j[:64]                 #set each input unit
+        x = j[:63]              #set each input unit
+        b=j[63]
         expected = j[-7:]
 
         """3 CELLS"""
         # expected = make_binary(expected)
 
-        for weight, t in zip(weights, expected):    #each output unit
-            result = 0                              # y_in in each training pair
-            for w, s in zip(weight, x):
-                result += w * s                     #calculate y_in(j)      j = 1, ..., 7
+        y_in = 0         # y_in in each training pair
 
-        for pos in range(63):
-            temp = weight[pos]
-            weight[pos] += alpha * (t - result) * x[pos]      #update weights(i, j)   i = 1, ..., 63
-            diff_weights[pos] = weight[pos] - temp
-        temp = weight[63]
-        weight[63] += alpha * (t - result)              # update bias(j)
-        diff_weights[63] = weight[63] - temp
-for x in diff_weights:
-    print(x)
+        for weight, t, dw in zip(weights, expected, diff_weights):    #each output unit
+            y_in = b
+            for w, s in zip(weight, x):
+                y_in += w * s                     #calculate y_in(j)      j = 1, ..., 7
+
+            for pos in range(63):
+                temp = weight[pos]
+                weight[pos] += (alpha * (t - y_in)) * x[pos]      #update weights(i, j)   i = 1, ..., 63
+                dw[pos] = weight[pos] - temp
+                print(dw[pos])
+            temp = weight[63]
+            weight[63] += alpha * (t - y_in)              # update bias(j)
+            dw[63] = weight[63] - temp
+            we.append(max(dw))
 print(str(epoch))
 
 """WEIGHTS AND BIASES SAVING PHASE OF NN"""
@@ -78,7 +88,6 @@ weight_file.close()
 print("\nThe Neural Network has been trained in " + str(epoch) + "th epochs.")
 print("Weights and Biases saved in: ‫Adeline_weights.txt")
 
-
 """USE PHASE OF ADELINE NN"""
 output = []
 _error = 0
@@ -87,16 +96,16 @@ results = open("‫‪results_adeline.txt‬‬", "w")
 if input("\nDo you want to use your Adeline NN? (y/n)") == 'y':
     test_file = read_train_file("OCR_test.txt")
     for elem in test_file:
-        sample = elem[:64]
+        sample = elem[:63]
         target = elem[-7:]
-
+        b=elem[63]
         """3 CELLS"""
         # target = make_binary(target)
 
         output.clear()
         _total += 1
         for weight in weights:
-            result = 0
+            result = b
             for w, s in zip(weight, sample):
                 result += w * s
             output.append(active_func(result))
