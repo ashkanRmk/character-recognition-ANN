@@ -63,7 +63,6 @@ for o in range(9):
         y_in = 0         # y_in in each training pair
 
         for weight, t, dw in zip(weights, expected, diff_weights):    #each output unit
-            y_in = b
             for w, s in zip(weight, x):
                 y_in += w * s                     #calculate y_in(j)      j = 1, ..., 7
 
