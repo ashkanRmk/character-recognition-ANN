@@ -24,8 +24,8 @@ def make_binary(n):
 def set_weight(num):
     weights = []
     for x in range(num):
-        weights.extend([[random() for _ in range(64)]])  # initialize weights and biases
-        # weights.extend([[0] * 64])
+        # weights.extend([[random() for _ in range(64)]])  # initialize weights and biases
+        weights.extend([[0] * 64])
     return weights
 
 cal_eroor = lambda error, total: (error / total) * 100
@@ -38,7 +38,7 @@ diff_weights = []                                    #contain errors of each tra
 for x in range(7):
     diff_weights.extend([[0] * 64])
 
-epoch = 0                                           #counter of epochs
+epoch = 0                                          #counter of epochs
 alpha = 0.01
 epsilon = 1
 training_data = read_train_file()
@@ -48,17 +48,19 @@ we = [0]
 ch = True
 
 """TRAINING PHASE OF NN"""
-while max(we) > epsilon or ch:                               #check stopping condition
+# while max(we) > epsilon or ch:                               #check stopping condition
+for o in range(9):
     epoch += 1
     ch = False
     for j in training_data:
-        x = j[:64]                 #set each input unit
+        x = j[:63]              #set each input unit
+        b=j[63]
         expected = j[-7:]
 
         """3 CELLS"""
         # expected = make_binary(expected)
 
-        y_in = 0  # y_in in each training pair
+        y_in = 0         # y_in in each training pair
 
         for weight, t, dw in zip(weights, expected, diff_weights):    #each output unit
             for w, s in zip(weight, x):
@@ -93,16 +95,16 @@ results = open("‫‪results_adeline.txt‬‬", "w")
 if input("\nDo you want to use your Adeline NN? (y/n)") == 'y':
     test_file = read_train_file("OCR_test.txt")
     for elem in test_file:
-        sample = elem[:64]
+        sample = elem[:63]
         target = elem[-7:]
-
+        b=elem[63]
         """3 CELLS"""
         # target = make_binary(target)
 
         output.clear()
         _total += 1
         for weight in weights:
-            result = 0
+            result = b
             for w, s in zip(weight, sample):
                 result += w * s
             output.append(active_func(result))
