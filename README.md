@@ -9,7 +9,7 @@
 
 ###### Writen in `Python` and `C++`
 
-##License
+## License
 MIT License
 
 Copyright (c) 2017
