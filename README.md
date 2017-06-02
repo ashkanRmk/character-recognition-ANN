@@ -7,4 +7,9 @@
 
 >The Calculation Inteligence - Simple Machine Learning Project
 
-###### Coded in `Python` and `C++`
+###### Writen in `Python` and `C++`
+
+##License
+MIT License
+
+Copyright (c) 2017
