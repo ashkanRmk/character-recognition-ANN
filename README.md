@@ -10,6 +10,6 @@
 ###### Writen in `Python` and `C++`
 
 ## License
-[MIT License][https://github.com/Ashkan-rmk/perceptron_PNN/blob/master/LICENSE]
+[MIT License](https://github.com/Ashkan-rmk/perceptron_PNN/blob/master/LICENSE)
 
 Copyright (c) 2017
