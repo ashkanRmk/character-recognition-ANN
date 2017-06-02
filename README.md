@@ -7,7 +7,7 @@
 
 >The Calculation Inteligence - Simple Machine Learning Project
 
-###### Writen in `Python` and `C++`
+###### Written in `Python` and `C++`
 
 ## License
 [MIT License](https://github.com/Ashkan-rmk/perceptron_PNN/blob/master/LICENSE)
