@@ -1,4 +1,5 @@
 ## Character Recognition Using Single-layer `Perceptron` and `Adeline`
+[![Travis branch](https://img.shields.io/travis/rust-lang/rust/master.svg)]()
 ###### This Project implement the `Single-layer` Neural Network using Perceptron and Adeline learning rules.
 - Input file : *OCR_train.txt*
 - Saved file : *‫‪perceptron_weights.txt‬‬*
