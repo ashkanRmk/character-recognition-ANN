@@ -57,10 +57,8 @@ delta_v = [hidden_unit]
 delta_w = [7]
 
 
-
-
-"""TRAINING PHASE OF NN"""
-""" 1st PHASE: FEED FORWARD """
+""" TRAINING PHASE OF NN """
+# """ 1st PHASE: FEED FORWARD """
 
 # while max(we) > epsilon or ch:                               #check stopping condition
 for o in range(9):
@@ -93,18 +91,27 @@ for o in range(9):
                 errorInput[e] = errorInputIn[e] * active_func_z(z_in[e])
                 for X in x:
                     delta_v[e] = alpha * errorInput[e] * X
-                    
-        #  for pos in range(63):
-        #         temp = weight[pos]
-        #         weight[pos] += (alpha * (t - y_in)) * x[pos]      #update weights(i, j)   i = 1, ..., 63
+
+# """ 3RD PHASE: UPDATE WEIGHTS AND BIASES """
+
+            for n in range(7):          # update weights in exit layer
+                w[n] += delta_w[n]
+
+            for n in range(hidden_unit):        # update weights in mid layer
+                v[n] += delta_v[n]
+
+        # for pos in range(hidden_unit):
+        #         temp = w[pos]
+        #         w[pos] += (alpha * (t - y_in)) * x[pos]      #update weights(i, j)   i = 1, ..., 63
         #         dw[pos] = weight[pos] - temp
         #         print(dw[pos])
         #     temp = weight[63]
         #     weight[63] += alpha * (t - y_in)              # update bias(j)
         #     dw[63] = weight[63] - temp
         #     we.append(max(dw))
-# print(str(epoch))
-#
+
+print(str(epoch))
+
 """WEIGHTS AND BIASES SAVING PHASE OF NN"""
 weight_file = open("Adeline_weights.txt‬‬", "w")
 weight_file.write("Epochs: " + str(epoch) + "th" + "\n" + "\n")
