@@ -42,16 +42,23 @@ cal_eroor = lambda error, total: (error / total) * 100
 
 v = set_v(21)
 w = set_w(7)
-
-
-epoch = 0                                          #counter of epoch
-training_data = read_train_file()
+alpha = 0.1
+epoch = 0       # counter of epoch
 hidden_unit = 21
+training_data = read_train_file()
 z_in = [hidden_unit]
 y_in = [7]
+y = [7]
+z = [hidden_unit]
+errorOutput = [7]
+errorInputIn = [hidden_unit]
+errorInput = [hidden_unit]
+delta_v = [hidden_unit]
+delta_w = [7]
 
-"""TRAINING PHASE OF NN"""
-""" 1st PHASE: FEED FORWARD """
+
+""" TRAINING PHASE OF NN """
+# """ 1st PHASE: FEED FORWARD """
 
 # while max(we) > epsilon or ch:                               #check stopping condition
 for o in range(9):
@@ -63,28 +70,48 @@ for o in range(9):
         expected = j[-7:]
         z_in[0] = 1
 
-        for i in range(hidden_unit+1):                          # each output unit
+        for m in range(hidden_unit+1):                          # each output unit
             for V, s in zip(v, x):
-                z_in[i+1] += V * s                     # calculate z_in(j)      j = 1, ..., p
-            z_in[i+1] = active_func_z(z_in[i+1])
+                z_in[m+1] += V * s                     # calculate z_in(j)      j = 1, ..., p
+            z[m+1] = active_func_z(z_in[m+1])
 
-        for i in range(7):
-            for W, z in zip(w, z_in):
-                y_in[i] += W * z
-            y_in[i] = active_func_z(y_in[i])
+            for i in range(7):
+                for W, z in zip(w, z_in):
+                    y_in[i] += W * z
+                y[i] = active_func_z(y_in[i])
 
+# """ 2nd PHASE: BACKPROPAGATE ERROR """
+            for k in range(7):
+                errorOutput[k] = (expected[k] - y[k]) * (1/2 * (1.0 + active_func_z(y_in[k])) * (1.0 - active_func_z(y_in[k])))         # calculate error factor in exit layer
+                delta_w[k] = alpha * errorOutput[k] * z[m]          # calculate delta w
 
-        #     for pos in range(63):
-        #         temp = weight[pos]
-        #         weight[pos] += (alpha * (t - y_in)) * x[pos]      #update weights(i, j)   i = 1, ..., 63
+            for e in range(hidden_unit):
+                for k in range(64):
+                    errorInputIn[e] = (expected[k] - y[k]) * (1/2 * (1.0 + active_func_z(y_in[k])) * (1.0 - active_func_z(y_in[k]))) * w[j]         # calculate error factor in mid layer
+                errorInput[e] = errorInputIn[e] * active_func_z(z_in[e])
+                for X in x:
+                    delta_v[e] = alpha * errorInput[e] * X
+
+# """ 3RD PHASE: UPDATE WEIGHTS AND BIASES """
+
+            for n in range(7):          # update weights in exit layer
+                w[n] += delta_w[n]
+
+            for n in range(hidden_unit):        # update weights in mid layer
+                v[n] += delta_v[n]
+
+        # for pos in range(hidden_unit):
+        #         temp = w[pos]
+        #         w[pos] += (alpha * (t - y_in)) * x[pos]      #update weights(i, j)   i = 1, ..., 63
         #         dw[pos] = weight[pos] - temp
         #         print(dw[pos])
         #     temp = weight[63]
         #     weight[63] += alpha * (t - y_in)              # update bias(j)
         #     dw[63] = weight[63] - temp
         #     we.append(max(dw))
-# print(str(epoch))
-#
+
+print(str(epoch))
+
 """WEIGHTS AND BIASES SAVING PHASE OF NN"""
 weight_file = open("Adeline_weights.txt‬‬", "w")
 weight_file.write("Epochs: " + str(epoch) + "th" + "\n" + "\n")
