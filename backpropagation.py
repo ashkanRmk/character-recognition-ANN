@@ -16,13 +16,6 @@ def active_func_z(z_in):          # activation function using bipolar sigmoid fu
     return (1 - exp(-z_in)) / (1 + exp(-z_in))
 
 
-def make_binary(n):
-    pos = n.index(1) + 1
-    res = list(format(pos, 'b').zfill(3))
-    res = [int(x) for x in res]
-    return res
-
-
 def set_v(num):
     v = []
     for x in range(num):
@@ -46,15 +39,15 @@ alpha = 0.1
 epoch = 0       # counter of epoch
 hidden_unit = 21
 training_data = read_train_file()
-z_in = [hidden_unit]
-y_in = [7]
-y = [7]
-z = [hidden_unit]
-errorOutput = [7]
-errorInputIn = [hidden_unit]
-errorInput = [hidden_unit]
-delta_v = [hidden_unit]
-delta_w = [7]
+z_in = []*hidden_unit
+y_in = []*7
+y = []*7
+z = []*hidden_unit
+errorOutput = []*7
+errorInputIn = []*hidden_unit
+errorInput = []*hidden_unit
+delta_v = []*hidden_unit
+delta_w = []*7
 
 
 """ TRAINING PHASE OF NN """
@@ -70,10 +63,10 @@ for o in range(9):
         expected = j[-7:]
         z_in[0] = 1
 
-        for m in range(hidden_unit+1):                          # each output unit
+        for m in range(hidden_unit):                          # each mid unit
             for V, s in zip(v, x):
-                z_in[m+1] += V * s                     # calculate z_in(j)      j = 1, ..., p
-            z[m+1] = active_func_z(z_in[m+1])
+                z_in[m] += V * s                     # calculate z_in(j)      j = 1, ..., p
+            z[m] = active_func_z(z_in[m])
 
             for i in range(7):
                 for W, z in zip(w, z_in):
@@ -100,15 +93,6 @@ for o in range(9):
             for n in range(hidden_unit):        # update weights in mid layer
                 v[n] += delta_v[n]
 
-        # for pos in range(hidden_unit):
-        #         temp = w[pos]
-        #         w[pos] += (alpha * (t - y_in)) * x[pos]      #update weights(i, j)   i = 1, ..., 63
-        #         dw[pos] = weight[pos] - temp
-        #         print(dw[pos])
-        #     temp = weight[63]
-        #     weight[63] += alpha * (t - y_in)              # update bias(j)
-        #     dw[63] = weight[63] - temp
-        #     we.append(max(dw))
 
 print(str(epoch))
 
