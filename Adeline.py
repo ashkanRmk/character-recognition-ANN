@@ -1,6 +1,6 @@
 from random import random
 
-def read_train_file(file="OCR_train.txt"):
+def read_train_file(file="OCR_train.txt"):          #read train data from file and ready to use
     training_data_list = []
     train_file = open(file, "r")
     for line in train_file:
@@ -84,7 +84,7 @@ for w in weights:
     weight_file.write(str(w) + "\n" + "\n")
 weight_file.close()
 
-print("\nThe Neural Network has been trained in " + str(epoch) + "th epochs.")
+print("\nThe Neural Network has been trained in " + str(epoch) + "th epochs.")      #output
 print("Weights and Biases saved in: ‫Adeline_weights.txt")
 
 """USE PHASE OF ADELINE NN"""
